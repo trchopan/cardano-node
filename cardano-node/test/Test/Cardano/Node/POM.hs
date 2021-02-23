@@ -45,6 +45,7 @@ testPartialYamlConfig =
                             (GenesisFile "dummmy-genesis-file") Nothing
     , pncSocketPath = Last Nothing
     , pncDiffusionMode = Last Nothing
+    , pncTestInDevelopmentVersions = Last Nothing
     , pncMaxConcurrencyBulkSync = Last Nothing
     , pncMaxConcurrencyDeadline = Last Nothing
     , pncLoggingSwitch = Last $ Just True
@@ -75,6 +76,7 @@ testPartialCliConfig =
     , pncDatabaseFile = mempty
     , pncSocketPath   = mempty
     , pncDiffusionMode = mempty
+    , pncTestInDevelopmentVersions = Last $ Just True
     , pncProtocolFiles = Last . Just $ ProtocolFilepaths Nothing Nothing Nothing Nothing Nothing Nothing
     , pncValidateDB = Last $ Just True
     , pncShutdownIPC = Last $ Just Nothing
@@ -106,6 +108,7 @@ expectedConfig =
                              (GenesisFile "dummmy-genesis-file") Nothing
     , ncSocketPath = Nothing
     , ncDiffusionMode = InitiatorAndResponderDiffusionMode
+    , ncTestInDevelopmentVersions = True
     , ncMaxConcurrencyBulkSync = Nothing
     , ncMaxConcurrencyDeadline = Nothing
     , ncLoggingSwitch = True

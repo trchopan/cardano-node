@@ -58,6 +58,13 @@ data NodeConfiguration
          -- Node parameters, not protocol-specific:
        , ncSocketPath     :: !(Maybe SocketPath)
        , ncDiffusionMode  :: !DiffusionMode
+         -- | Whether to limit the negotiated node-to-node and node-to-client
+         -- versions to that of the latest official release
+         --
+         -- Defaults to 'False'. For example, the QA Team must set this to
+         -- 'True' in order to exercise a feature that is (partially) developed
+         -- but not scheduled for activation in the next release.
+       , ncTestInDevelopmentVersions :: !Bool
 
          -- BlockFetch configuration
        , ncMaxConcurrencyBulkSync :: !(Maybe MaxConcurrencyBulkSync)
@@ -120,6 +127,8 @@ instance FromJSON PartialNodeConfiguration where
       pncSocketPath' <- Last <$> v .:? "SocketPath"
       pncDiffusionMode'
         <- Last . fmap getDiffusionMode <$> v .:? "DiffusionMode"
+      pncTestInDevelopmentVersions'
+        <- Last <$> v .:? "TestInDevelopmentVersions"
 
       -- Blockfetch parameters
       pncMaxConcurrencyBulkSync' <- Last <$> v .:? "MaxConcurrencyBulkSync"
@@ -150,6 +159,7 @@ instance FromJSON PartialNodeConfiguration where
              pncProtocolConfig = pncProtocolConfig'
            , pncSocketPath = pncSocketPath'
            , pncDiffusionMode = pncDiffusionMode'
+           , pncTestInDevelopmentVersions = pncTestInDevelopmentVersions'
            , pncMaxConcurrencyBulkSync = pncMaxConcurrencyBulkSync'
            , pncMaxConcurrencyDeadline = pncMaxConcurrencyDeadline'
            , pncLoggingSwitch = Last $ Just pncLoggingSwitch'
@@ -250,6 +260,7 @@ defaultPartialNodeConfiguration =
     , pncLoggingSwitch = Last $ Just True
     , pncSocketPath = mempty
     , pncDiffusionMode = Last $ Just InitiatorAndResponderDiffusionMode
+    , pncTestInDevelopmentVersions = Last $ Just False
     , pncTopologyFile = Last . Just $ TopologyFile "configuration/cardano/mainnet-topology.json"
     , pncNodeIPv4Addr = mempty
     , pncNodeIPv6Addr = mempty
@@ -285,6 +296,7 @@ makeNodeConfiguration pnc = do
   logMetrics <- lastToEither "Missing LogMetrics" $ pncLogMetrics pnc
   traceConfig <- lastToEither "Missing TraceConfig" $ pncTraceConfig pnc
   diffusionMode <- lastToEither "Missing DiffusionMode" $ pncDiffusionMode pnc
+  testInDevelopmentVersions <- lastToEither "Missing TestInDevelopmentVersions" $ pncTestInDevelopmentVersions pnc
   return $ NodeConfiguration
              { ncNodeIPv4Addr = getLast $ pncNodeIPv4Addr pnc
              , ncNodeIPv6Addr = getLast $ pncNodeIPv6Addr pnc
@@ -299,6 +311,7 @@ makeNodeConfiguration pnc = do
              , ncProtocolConfig = protocolConfig
              , ncSocketPath = getLast $ pncSocketPath pnc
              , ncDiffusionMode = diffusionMode
+             , ncTestInDevelopmentVersions = testInDevelopmentVersions
              , ncMaxConcurrencyBulkSync = getLast $ pncMaxConcurrencyBulkSync pnc
              , ncMaxConcurrencyDeadline = getLast $ pncMaxConcurrencyDeadline pnc
              , ncLoggingSwitch = loggingSwitch

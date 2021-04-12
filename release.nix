@@ -76,15 +76,15 @@ let
   in {
     node = getScript "node";
   };
-  dockerImageArtifact = let
-    image = archs.${builtins.head supportedSystems}.dockerImage;
-    wrapImage = image: pkgs.runCommand "${image.name}-hydra" {} ''
-      mkdir -pv $out/nix-support/
-      cat <<EOF > $out/nix-support/hydra-build-products
-      file dockerimage-${image.name} ${image}
-      EOF
-    '';
-  in wrapImage image;
+  dockerImages = let
+    inherit (archs.${builtins.head supportedSystems}) dockerImage submitApiDockerImage;
+  in pkgs.runCommand "cardano-node-docker-images" {} ''
+    mkdir -pv $out/nix-support/
+    cat <<EOF > $out/nix-support/hydra-build-products
+    file dockerimage-${dockerImage.name} ${dockerImage}
+    file dockerimage-${submitApiDockerImage.name} ${submitApiDockerImage}
+    EOF
+  '';
   mkPins = inputs: pkgs.runCommand "ifd-pins" {} ''
     mkdir $out
     cd $out

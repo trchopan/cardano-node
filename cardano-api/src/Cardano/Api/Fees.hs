@@ -18,7 +18,9 @@ import qualified Data.ByteString as BS
 import qualified Cardano.Binary as CBOR
 import qualified Cardano.Chain.Common as Byron
 
+import qualified Cardano.Ledger.Core as Core
 import qualified Shelley.Spec.Ledger.LedgerState as Shelley
+import qualified Shelley.Spec.Ledger.Tx as Shelley
 
 import           Cardano.Api.Eras
 import           Cardano.Api.NetworkId
@@ -38,6 +40,7 @@ import           Cardano.Api.Value
 --
 transactionFee :: forall era.
                   IsShelleyBasedEra era
+               => Core.Tx (ShelleyLedgerEra era) ~ Shelley.Tx (ShelleyLedgerEra era)
                => Natural -- ^ The fixed tx fee
                -> Natural -- ^ The tx fee per byte
                -> Tx era
@@ -68,6 +71,7 @@ transactionFee _ _ (ByronTx _) =
 --
 estimateTransactionFee :: forall era.
                           IsShelleyBasedEra era
+                       => Core.Tx (ShelleyLedgerEra era) ~ Shelley.Tx (ShelleyLedgerEra era)
                        => NetworkId
                        -> Natural -- ^ The fixed tx fee
                        -> Natural -- ^ The tx fee per byte

@@ -60,13 +60,15 @@ import qualified Ouroboros.Consensus.Cardano.Block as Consensus
 import qualified Ouroboros.Consensus.Cardano.ByronHFC as Consensus
 import qualified Ouroboros.Consensus.HardFork.Combinator as Consensus
 import qualified Ouroboros.Consensus.HardFork.Combinator.Degenerate as Consensus
-import qualified Ouroboros.Consensus.Shelley.ShelleyHFC as Consensus
 import qualified Ouroboros.Consensus.Shelley.Ledger as Consensus
+import qualified Ouroboros.Consensus.Shelley.ShelleyHFC as Consensus
 
 import qualified Cardano.Chain.Block as Byron
 import qualified Cardano.Chain.UTxO as Byron
 
+import qualified Cardano.Ledger.Core as Core
 import qualified Shelley.Spec.Ledger.BlockChain as Shelley
+import qualified Shelley.Spec.Ledger.Tx as Shelley
 
 import           Cardano.Api.Eras
 import           Cardano.Api.HasTypeProxy
@@ -143,7 +145,8 @@ getBlockTxs (ShelleyBlock shelleyEra Consensus.ShelleyBlock{Consensus.shelleyBlo
       ShelleyBasedEraAllegra -> go
       ShelleyBasedEraMary    -> go
   where
-    go :: Consensus.ShelleyBasedEra (ShelleyLedgerEra era) => [Tx era]
+    go :: Core.Tx (ShelleyLedgerEra era) ~ Shelley.Tx (ShelleyLedgerEra era)
+       => Consensus.ShelleyBasedEra (ShelleyLedgerEra era) => [Tx era]
     go = case shelleyBlockRaw of Shelley.Block _header (Shelley.TxSeq txs) -> [ShelleyTx shelleyEra x | x <- toList txs]
 
 -- ----------------------------------------------------------------------------

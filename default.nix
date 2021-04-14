@@ -58,6 +58,7 @@ let
     inherit haskellPackages
       cardano-node cardano-node-profiled cardano-node-eventlogged
       cardano-cli db-converter cardano-ping
+      cardano-tx-generator
       scripts nixosTests environments dockerImage mkCluster bech32;
 
     # so that eval time gc roots are cached (nix-tools stuff)

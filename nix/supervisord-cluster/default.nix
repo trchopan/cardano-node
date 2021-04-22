@@ -171,7 +171,7 @@ let
     wb profile describe ${profileName}
 
     if test -e "${stateDir}" && test ! -f "${stateDir}"/genesis/byron-protocol-params.json
-    then echo "workbench ERROR:  state directory exists, but looks suspicious -- refusing to remove it: '${stateDir}'" >&2
+    then echo "workbench ERROR:  state directory exists, but looks suspicious -- remove it manually to continue:  rm -rf ${stateDir}" >&2
          exit 1
     fi
 

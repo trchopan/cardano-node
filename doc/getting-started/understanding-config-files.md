@@ -54,6 +54,10 @@ Tells your node to which nodes in the network it should talk to. A minimal versi
 
 Your __block-producing__ node must __ONLY__ talk to your __relay nodes__, and the relay node should talk to other relay nodes in the network. Go to our telegram channel to find out IP addresses and ports of peers.
 
+You __can__ tell the node that the topology configuration file changed by sending a SIGHUP
+signal to the `cardano-node` process, e.g. `pkill -HUP cardano-node`. After receiving the
+signal, `cardano-node` will re-read the file and restart all dns resolution.
+
 #### The genesis.json file
 
 The genesis file is generated with the `cardano-cli` by reading a `genesis.spec.json` file, which is out of scope for this document.

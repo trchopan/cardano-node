@@ -144,7 +144,7 @@ let
   inherit (pkgs.commonLib) sources nixpkgs;
 
   jobs = {
-    inherit dockerImageArtifact;
+    inherit dockerImages;
     ifd-pins = mkPins {
       inherit (sources) iohk-nix "haskell.nix";
       inherit nixpkgs;
@@ -205,7 +205,7 @@ let
     (optionals windowsBuild (collectJobs jobs.windows.checks))
     # Default system builds (linux on hydra):
     (map (cluster: collectJobs jobs.${cluster}.scripts.node.${head supportedSystems}) environments)
-    [ jobs.dockerImageArtifact ]
+    [ jobs.dockerImages ]
   ]));
 
 in jobs

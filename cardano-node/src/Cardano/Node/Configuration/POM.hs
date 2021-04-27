@@ -145,6 +145,7 @@ instance FromJSON PartialNodeConfiguration where
           CardanoProtocol ->
             Last . Just  <$> (NodeProtocolConfigurationCardano <$> parseByronProtocol v
                                                                <*> parseShelleyProtocol v
+                                                               <*> parseAlonzoProtocol v
                                                                <*> parseHardForkProtocol v)
       pure PartialNodeConfiguration {
              pncProtocolConfig = pncProtocolConfig'
@@ -218,6 +219,24 @@ instance FromJSON PartialNodeConfiguration where
         pure NodeShelleyProtocolConfiguration {
                npcShelleyGenesisFile
              , npcShelleyGenesisFileHash
+             }
+
+      parseAlonzoProtocol v = do
+        primary   <- v .:? "AlonzoGenesisFile"
+        secondary <- v .:? "GenesisFile"
+        npcAlonzoGenesisFile <-
+          case (primary, secondary) of
+            (Just g, Nothing)  -> return g
+            (Nothing, Just g)  -> return g
+            (Nothing, Nothing) -> fail $ "Missing required field, either "
+                                      ++ "AlonzoGenesisFile or GenesisFile"
+            (Just _, Just _)   -> fail $ "Specify either AlonzoGenesisFile"
+                                      ++ "or GenesisFile, but not both"
+        npcAlonzoGenesisFileHash <- v .:? "AlonzoGenesisHash"
+
+        pure NodeAlonzoProtocolConfiguration {
+               npcAlonzoGenesisFile
+             , npcAlonzoGenesisFileHash
              }
 
       parseHardForkProtocol v = do

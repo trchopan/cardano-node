@@ -3,7 +3,6 @@
 
   inputs = {
     haskellNix.url = "github:input-output-hk/haskell.nix";
-    # Would rather use iohkNix/nixpkgs here but we may need to add a flake there first
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     iohkNix = {

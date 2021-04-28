@@ -28,16 +28,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1619562927,
+        "lastModified": 1619575755,
         "narHash": "sha256-UCrW7x7h4WMlssN/cxcj9rZ+hmGgTqO7Kf0oGBRTlZg=",
         "owner": "input-output-hk",
         "repo": "iohk-nix",
-        "rev": "2f5035494ed5202b33ac1f6ac03201a9f99e43d1",
+        "rev": "9dd8ce3474ca4cd1f7c2310c2cf92fb9cd2e0984",
         "type": "github"
       },
       "original": {
         "owner": "input-output-hk",
-        "ref": "flake",
         "repo": "iohk-nix",
         "type": "github"
       }

@@ -6,7 +6,7 @@
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     iohkNix = {
-      url = "github:input-output-hk/iohk-nix/flake";
+      url = "github:input-output-hk/iohk-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

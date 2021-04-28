@@ -398,9 +398,9 @@ getTxBody (ShelleyTx era tx) =
                      => Shelley.Tx ledgerera
                      -> TxBody era
     getShelleyTxBody Shelley.Tx {
-                       Shelley._body       = txbody,
-                       Shelley._metadata   = txmetadata,
-                       Shelley._witnessSet = Shelley.WitnessSet
+                       Shelley.body = txbody,
+                       Shelley.auxiliaryData = txmetadata,
+                       Shelley.wits = Shelley.WitnessSet
                                               _addrWits
                                                msigWits
                                               _bootWits
@@ -429,7 +429,7 @@ getTxWitnesses (ShelleyTx era tx) =
                           => Shelley.Tx ledgerera
                           -> [KeyWitness era]
     getShelleyTxWitnesses Shelley.Tx {
-                            Shelley._witnessSet =
+                            Shelley.wits =
                               Shelley.WitnessSet
                                 addrWits
                                _msigWits
